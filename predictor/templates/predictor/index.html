@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Risk Assessment</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #1976D2;
+            --primary-dark: #0D47A1;
+            --primary-light: #BBDEFB;
+            --secondary: #FF5722;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --light: #F5F7FA;
+            --dark: #263238;
+            --gray: #607D8B;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f0f4f8;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px;
+            padding-right: 2.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .result-card {
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .result-high {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .result-moderate {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .result-low {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .result-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--primary-dark);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-high {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .badge-moderate {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .badge-low {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .info-box {
+            background-color: rgba(25, 118, 210, 0.1);
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.8rem;
+        }
+        
+        .factor-list {
+            list-style-type: none;
+        }
+        
+        .factor-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .factor-list li:before {
+            content: '\f058';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary);
+        }
+        
+        .risk-meter {
+            position: relative;
+            height: 40px;
+            background: linear-gradient(to right, #4CAF50, #FFC107, #F44336);
+            border-radius: 20px;
+            margin: 1.5rem 0;
+        }
+        
+        .risk-indicator {
+            position: absolute;
+            width: 20px;
+            height: 40px;
+            background-color: var(--dark);
+            border-radius: 10px;
+            top: 0;
+            left: 0; /* Will be set dynamically via JS */
+            transform: translateX(-50%);
+        }
+        
+        .disclaimer {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-style: italic;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer {
+            background-color: var(--primary-dark);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <h1>CardioSense</h1>
+            </div>
+            <p>Advanced Heart Disease Risk Assessment Tool</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="grid">
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-clipboard-list"></i>
+                        Patient Information
+                    </div>
+                    <div class="card-body">
+                        <div class="info-box">
+                            <i class="fas fa-info-circle"></i>
+                            Please enter accurate patient data for the most reliable risk assessment. All fields are required.
+                        </div>
+                        
+                        <form method="post" action="{% url 'predictor:predict' %}">
+                            {% csrf_token %}
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="id_age">Age</label>
+                                    {{ form.age }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="id_sex">Sex</label>
+                                    {{ form.sex }}
+                                </div>
+                            </div>
+                            
+                            <h3 class="section-title">Clinical Information</h3>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="id_chest_pain_type">Chest Pain Type</label>
+                                    {{ form.chest_pain_type }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="id_resting_bp">Resting Blood Pressure (mm Hg)</label>
+                                    {{ form.resting_bp }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="id_cholesterol">Cholesterol (mg/dL)</label>
+                                    {{ form.cholesterol }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="id_fasting_bs">Fasting Blood Sugar > 120 mg/dL</label>
+                                    {{ form.fasting_bs }}
+                                </div>
+                            </div>
+                            
+                            <h3 class="section-title">Cardiac Assessment</h3>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="id_resting_ecg">Resting ECG Results</label>
+                                    {{ form.resting_ecg }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="id_max_hr">Maximum Heart Rate</label>
+                                    {{ form.max_hr }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="id_exercise_angina">Exercise-Induced Angina</label>
+                                    {{ form.exercise_angina }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="id_oldpeak">ST Depression (Oldpeak)</label>
+                                    {{ form.oldpeak }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="id_st_slope">ST Slope</label>
+                                {{ form.st_slope }}
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-heartbeat"></i>
+                                    Calculate Risk
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                {% if submitted %}
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar"></i>
+                        Assessment Results
+                    </div>
+                    <div class="card-body">
+                        <div class="result-card {% if prediction == 1 %}result-high{% elif probability > 0.3 %}result-moderate{% else %}result-low{% endif %}">
+                            <div class="result-heading">
+                                <i class="fas fa-chart-line"></i>
+                                Risk Assessment
+                            </div>
+                            
+                            <div>
+                                <span class="badge {% if prediction == 1 %}badge-high{% elif probability > 0.3 %}badge-moderate{% else %}badge-low{% endif %}">
+                                    {{ risk_level }}
+                                </span>
+                            </div>
+                            
+                            <div class="result-value">
+                                {{ probability }}
+                            </div>
+                            
+                            <p><strong>Diagnosis:</strong> {{ has_heart_disease }}</p>
+                            
+                            <div class="risk-meter">
+                                <div class="risk-indicator" id="riskIndicator"></div>
+                            </div>
+                            
+                            <script>
+    // Set risk indicator position based on probability
+    document.addEventListener('DOMContentLoaded', function() {
+        const indicator = document.getElementById('riskIndicator');
+        if (indicator) {
+            // Get the probability value from the page content
+            // This approach is more robust as it doesn't rely on template variables
+            const resultValue = document.querySelector('.result-value');
+            let probabilityText = '';
+            
+            if (resultValue) {
+                probabilityText = resultValue.textContent.trim();
+            }
+            
+            // Parse the probability value
+            let probabilityValue = 0;
+            if (probabilityText) {
+                // Remove any non-numeric characters except decimal point
+                probabilityText = probabilityText.replace(/[^\d.]/g, '');
+                probabilityValue = parseFloat(probabilityText);
+                
+                // Check if it's a percentage (over 1)
+                if (probabilityValue > 1) {
+                    probabilityValue = probabilityValue / 100;
+                }
+            }
+            
+            // Ensure value is between 0 and 1
+            probabilityValue = Math.max(0, Math.min(1, probabilityValue));
+            
+            // Set the position
+            indicator.style.left = (probabilityValue * 100) + '%';
+            
+            // For debugging
+            console.log('Probability text:', probabilityText);
+            console.log('Probability value:', probabilityValue);
+            console.log('Indicator position:', indicator.style.left);
+        }
+    });
+</script>
+                        </div>
+                        
+                        <div class="info-box">
+                            <h3>
+                                <i class="fas fa-info-circle"></i>
+                                Interpretation
+                            </h3>
+                            {% if prediction == 1 %}
+                            <p>The assessment indicates a <strong>high probability</strong> of heart disease. Clinical signs suggest cardiovascular concerns that warrant further investigation.</p>
+                            <p>Recommended action: Schedule a comprehensive cardiac evaluation with a specialist.</p>
+                            {% else %}
+                            <p>The assessment indicates a <strong>low probability</strong> of heart disease. However, regular monitoring of cardiovascular health is still advised.</p>
+                            <p>Recommended action: Continue regular check-ups and maintain heart-healthy lifestyle choices.</p>
+                            {% endif %}
+                            
+                            <div class="disclaimer">
+                                <strong>Important:</strong> This prediction is based on a machine learning model and should not replace professional medical advice. Always consult with healthcare providers for diagnosis and treatment decisions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-heart"></i>
+                        Cardiovascular Health Information
+                    </div>
+                    <div class="card-body">
+                        <div class="info-box">
+                            <h3>
+                                <i class="fas fa-exclamation-circle"></i>
+                                Key Heart Disease Risk Factors
+                            </h3>
+                            <ul class="factor-list">
+                                <li><strong>Age & Sex:</strong> Risk increases with age; males generally have higher risk before age 65.</li>
+                                <li><strong>Chest Pain:</strong> Certain types, particularly angina, are significant indicators of potential heart disease.</li>
+                                <li><strong>Blood Pressure & Cholesterol:</strong> Elevated levels significantly increase cardiovascular risk.</li>
+                                <li><strong>Diabetes:</strong> Fasting blood sugar above 120 mg/dL indicates potential diabetes, a major heart disease risk factor.</li>
+                                <li><strong>ECG Abnormalities:</strong> Resting ECG abnormalities can reveal underlying heart conditions.</li>
+                                <li><strong>Maximum Heart Rate:</strong> Lower peak heart rate during physical activity may indicate cardiovascular limitations.</li>
+                                <li><strong>Exercise Angina:</strong> Chest pain during physical activity is a critical warning sign.</li>
+                                <li><strong>ST Depression & Slope:</strong> These ECG measurements during stress tests help assess cardiac function and blood flow.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="info-box">
+                            <h3>
+                                <i class="fas fa-shield-alt"></i>
+                                Preventive Measures
+                            </h3>
+                            <p>Heart disease risk can be significantly reduced through:</p>
+                            <ul class="factor-list">
+                                <li>Regular physical activity (150+ minutes of moderate exercise weekly)</li>
+                                <li>Heart-healthy diet rich in fruits, vegetables, whole grains, and lean proteins</li>
+                                <li>Maintaining healthy weight and blood pressure levels</li>
+                                <li>Avoiding tobacco and limiting alcohol consumption</li>
+                                <li>Managing stress through mindfulness and relaxation techniques</li>
+                                <li>Regular health screenings and following medical advice</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>CardioSense Heart Disease Prediction Tool &copy; {% now "Y" %}</p>
+            <p>Developed as a clinical decision support tool. Not intended to replace professional medical advice.</p>
+        </div>
+    </footer>
+</body>
+</html>

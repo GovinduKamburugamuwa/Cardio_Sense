@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CardioSense</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #1976D2;
+            --primary-dark: #0D47A1;
+            --primary-light: #BBDEFB;
+            --secondary: #FF5722;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --light: #F5F7FA;
+            --dark: #263238;
+            --gray: #607D8B;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f0f4f8;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25);
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            border: none;
+            font-family: inherit;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+        
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .info-box {
+            background-color: rgba(25, 118, 210, 0.1);
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-box i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+        
+        .alternate-action {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--gray);
+        }
+        
+        .alternate-action a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .alternate-action a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            background-color: var(--primary-dark);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .card {
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <h1>CardioSense</h1>
+            </div>
+            <p>Advanced Heart Disease Risk Assessment Tool</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-sign-in-alt"></i>
+                Sign In
+            </div>
+            <div class="card-body">
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    Please sign in to access your CardioSense account.
+                </div>
+                
+                <form method="post" action="{% url 'predictor:login' %}">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                    <div class="error-message">
+                        {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <input type="text" name="username" id="id_username" class="form-control" required placeholder="Enter your username">
+                        {% if form.username.errors %}
+                        <div class="error-message">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_password">Password</label>
+                        <input type="password" name="password" id="id_password" class="form-control" required placeholder="Enter your password">
+                        {% if form.password.errors %}
+                        <div class="error-message">{{ form.password.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="id_remember" name="remember">
+                        <label class="form-check-label" for="id_remember">Remember me</label>
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a href="{% url 'predictor:password_reset' %}">Forgot password?</a>
+                    </div>
+                    
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </button>
+                    </div>
+                    
+                    <!-- If you want to add a hidden field to redirect after login -->
+                    {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    {% endif %}
+                </form>
+                
+                <div class="alternate-action">
+                    Don't have an account? <a href="{% url 'predictor:signup' %}">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>CardioSense Heart Disease Prediction Tool &copy; {% now "Y" %}</p>
+            <p>Developed as a clinical decision support tool. Not intended to replace professional medical advice.</p>
+        </div>
+    </footer>
+</body>
+</html>

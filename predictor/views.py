@@ -6,7 +6,74 @@ import joblib
 from django.shortcuts import render
 from django.conf import settings
 from .forms import HeartDiseaseForm
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
+from django.urls import reverse_lazy
 
+from django import forms
+from django.contrib.auth.models import User
+
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, required=True, widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'placeholder': 'Enter your email'}
+    ))
+    
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+        
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        # Add form-control class to all fields for Bootstrap styling
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': f'Enter your {field_name}' if field_name != 'password2' else 'Confirm your password'
+            })
+
+# Signup View
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Log the user in after signup
+            login(request, user)
+            messages.success(request, 'Your account has been created successfully!')
+            return redirect('/')  # Adjust this to your main app page
+    else:
+        form = SignUpForm()
+    
+    return render(request, 'accounts/signup.html', {'form': form})
+
+# Login View
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Welcome back, {username}!')
+                # Redirect to the page user was trying to access, or the home page
+                next_page = request.POST.get('next', 'predictor:predict')
+                return redirect(next_page)
+        else:
+            messages.error(request, 'Invalid username or password.')
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, 'accounts/login.html', {'form': form})
+
+# Logout View
+def logout_view(request):
+    logout(request)
+    messages.info(request, 'You have been logged out successfully.')
+    return redirect('predictor:login')  # Add the namespace
 
 # Load model and preprocessing components
 model_path = os.path.join(settings.ML_MODELS_DIR, 'heart_disease_predictor.pkl')

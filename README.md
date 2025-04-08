@@ -103,31 +103,6 @@ The ML pipeline consists of:
 5. Model evaluation and validation
 6. Model deployment within the Django application
 
-## Project Structure
-
-```
-cardiosense/
-├── core/                    # Django app core functionality
-│   ├── migrations/
-│   ├── static/              # CSS, JS, images
-│   ├── templates/           # HTML templates
-│   ├── models.py            # Database models
-│   ├── views.py             # View controllers
-│   └── ml_model.py          # ML model integration
-├── cardiosense/             # Django project settings
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── ml/                      # Machine learning code
-│   ├── data/                # Training data
-│   ├── notebooks/           # Jupyter notebooks
-│   ├── model_training.py    # Model training script
-│   └── saved_models/        # Saved model files
-├── manage.py
-├── requirements.txt
-└── README.md
-```
-
 ## Development
 
 ### Training the Model

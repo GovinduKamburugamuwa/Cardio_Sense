@@ -1,5 +1,5 @@
 # CardioSense - Heart Disease Risk Assessment Tool
-- **you can visit the Cardio_Sense using this link :- https://govinduoshada.pythonanywhere.com/
+## you can visit the Cardio_Sense using this link :- https://govinduoshada.pythonanywhere.com/
 
 ![image](https://github.com/user-attachments/assets/7e097fa9-d309-4289-b06f-0bee14816880)
 ![image](https://github.com/user-attachments/assets/cf086100-6d1d-4826-885c-bdff448febe3)
